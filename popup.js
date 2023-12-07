@@ -3,4 +3,5 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       var numberOfPostRequests = message.numberOfPostRequests;
       document.getElementById('numberOfPostRequestsDisplay').innerText = 'Number of Post Requests: ' + numberOfPostRequests;
     }
+    return true;
   });

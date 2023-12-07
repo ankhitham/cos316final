@@ -10,6 +10,12 @@
   "background": {
     "service_worker": "service-worker.js"
   },
-  "permissions": ["webRequest", "notifications", "webRequestAuthProvider"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["popup.js"]
+    }
+  ],
+  "permissions": ["webRequest", "notifications", "webRequestAuthProvider", "activeTab", "tabs"],
   "host_permissions": ["http://*/*", "https://*/*"]
 }
