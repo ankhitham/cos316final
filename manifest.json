@@ -16,6 +16,6 @@
       "js": ["popup.js"]
     }
   ],
-  "permissions": ["webRequest", "notifications", "webRequestAuthProvider", "activeTab", "tabs"],
+  "permissions": ["webRequest", "notifications", "webRequestAuthProvider", "activeTab", "tabs", "system.cpu"],
   "host_permissions": ["http://*/*", "https://*/*"]
 }
