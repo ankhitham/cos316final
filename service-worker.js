@@ -1,15 +1,20 @@
 chrome.webRequest.onCompleted.addListener(
-    function(details) {
-    console.log("Hi! Before a request!")
-    chrome.notifications.create(`my-notification-${Date.now()}`, {
-      type: 'basic',
-      iconUrl: 'next_try.png',
-      title: 'page loaded',
-      message:
-        'Completed loading: ' +
-        details.url 
-  
-    }, function() { console.log('created!'); });
-},
-    {urls: ["http://*/*", "https://*/*"]}
-  );
+  function(details) {
+    if (details.method === "POST") {
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'next_try.png',
+        title: 'Behind the Screen',
+        message: 'Request Method: ' + details.method +
+                 ' Status Code: ' + details.statusCode
+      });
+    }
+
+    console.log('Request Method: ' + details.method +
+                ' Status Code: ' + details.statusCode);
+  },
+  {
+    urls: ["http://*/*", "https://*/*"]
+  },
+  ['responseHeaders']
+);
