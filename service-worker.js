@@ -1,17 +1,15 @@
-chrome.webRequest.onBeforeRequest.addListener(
+chrome.webRequest.onCompleted.addListener(
     function(details) {
     console.log("Hi! Before a request!")
-    chrome.notifications.create({
+    chrome.notifications.create(`my-notification-${Date.now()}`, {
       type: 'basic',
       iconUrl: 'next_try.png',
       title: 'page loaded',
       message:
         'Completed loading: ' +
-        details.url +
-        ' at ' +
-        details.timeStamp +
-        ' milliseconds since the epoch.'
-    });
+        details.url 
+  
+    }, function() { console.log('created!'); });
 },
     {urls: ["http://*/*", "https://*/*"]}
   );
