@@ -8,4 +8,15 @@ chrome.storage.local.get(['numberOfPostRequests'], function(result) {
       console.error("Number of POST requests is undefined in content script.");
   }
 });
+
+chrome.storage.local.get(['minutes'], function(result) {
+  var minutes = result.minutes;
+  
+  if (minutes !== undefined) {
+      console.log("Number of minutes since start of session: " + minutes);
+      document.getElementById('minutes').innerText = 'Minutes since start of session: ' + minutes;
+  } else {
+      console.error("Minutes is undefined in content script.");
+  }
+});
   
