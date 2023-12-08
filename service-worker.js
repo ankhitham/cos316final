@@ -39,14 +39,14 @@ chrome.webRequest.onCompleted.addListener(
   ['responseHeaders']
 );
 
-chrome.alarms.create("5min", {
+chrome.alarms.create("1min", {
   delayInMinutes: 1,
   periodInMinutes: 1
 });
 
 // To ensure a non-persistent script wakes up, call this code at its start synchronously
 chrome.alarms.onAlarm.addListener(function(alarm) {
-  if (alarm.name === "5min") {
+  if (alarm.name === "1min") {
     chrome.system.memory.getInfo(function(info) {
       var capacity = info.capacity;
       var available = info.availableCapacity;
