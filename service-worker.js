@@ -31,3 +31,28 @@ chrome.webRequest.onCompleted.addListener(
   },
   ['responseHeaders']
 );
+
+chrome.alarms.create("5min", {
+  delayInMinutes: 1,
+  periodInMinutes: 1
+});
+
+// To ensure a non-persistent script wakes up, call this code at its start synchronously
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  if (alarm.name === "5min") {
+    chrome.system.memory.getInfo(function(info) {
+      var capacity = info.capacity;
+      var available = info.availableCapacity;
+      console.log('Alarm' + capacity + 'available' + available);
+      if (available / capacity <= 0.5) {
+        chrome.notifications.create({
+          type: 'basic',
+          iconUrl: 'next_try.png',
+          title: 'Behind the Screen',
+          message: 'Available storage capacity dropped'
+        });
+      }
+      console.log('gone into if');
+    });
+  }
+});
