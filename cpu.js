@@ -12,3 +12,11 @@ chrome.system.cpu.getInfo(function(info) {
   document.getElementById('numOfProcessors').innerText = message;
 });
 
+chrome.system.memory.getInfo(function(info) {
+  var capacity = info.capacity;
+  var available = info.availableCapacity;
+  console.log(capacity + 'available' + available);
+  var message = 'Total capacity in megabytes: ' + (capacity / 1048576).toFixed(2) + ' Available memory at start of session in megabytes ' + (available / 1048576).toFixed(2)
+  document.getElementById('capacity').innerText = message;
+});
+
