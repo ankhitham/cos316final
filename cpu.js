@@ -20,3 +20,14 @@ chrome.system.memory.getInfo(function(info) {
   document.getElementById('capacity').innerText = message;
 });
 
+chrome.storage.local.get(['averageLatency'], function(result) {
+    var avgLatency = result.averageLatency;
+    var message = 'Average Latency (ms): ' + avgLatency;
+    document.getElementById('latency').innerText = message;
+    if (avgLatency !== undefined) {
+        console.log("Average Latency: " + avgLatency);
+    } else {
+        console.error("Average latency is undefined in content script.");
+    }
+});
+

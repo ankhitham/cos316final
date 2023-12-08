@@ -1,4 +1,6 @@
 var numberOfPostRequests = 0;
+var sumOfLatency = 0;
+var averageLatency = 0;
 chrome.storage.local.set({ 'numberOfPostRequests': 0 });
 var startTime = 0;
 
@@ -18,6 +20,7 @@ chrome.webRequest.onCompleted.addListener(
       chrome.storage.local.set({'numberOfPostRequests': numberOfPostRequests });
 
       const loadTime = details.timeStamp - startTime;
+      sumOfLatency += loadTime;
       chrome.notifications.create({
         type: 'basic',
         iconUrl: 'next_try.png',
@@ -48,6 +51,8 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       var capacity = info.capacity;
       var available = info.availableCapacity;
       console.log('Alarm' + capacity + 'available' + available);
+      averageLatency = sumOfLatency / numberOfPostRequests;
+      chrome.storage.local.set({'averageLatency':  averageLatency});
       if (available / capacity <= 0.95) {
         var percentAvail = available / capacity * 100;
         percentAvail = percentAvail.toFixed(2);
@@ -55,7 +60,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           type: 'basic',
           iconUrl: 'next_try.png',
           title: 'Behind the Screen',
-          message: 'Available storage capacity dropped to ' + percentAvail + '%'
+          message: 'Available storage capacity is ' + percentAvail + '%'
         });
       }
       console.log('gone into if');
