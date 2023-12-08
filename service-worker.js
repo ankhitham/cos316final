@@ -1,8 +1,11 @@
 var numberOfPostRequests = 0;
 var sumOfLatency = 0;
 var averageLatency = 0;
+chrome.storage.local.set({ 'averageLatency': 0 });
 chrome.storage.local.set({ 'numberOfPostRequests': 0 });
 var startTime = 0;
+var minutes = 0;
+chrome.storage.local.set({ 'minutes': 0 });
 
 chrome.webRequest.onResponseStarted.addListener(
   function(details) {
@@ -47,6 +50,8 @@ chrome.alarms.create("1min", {
 // To ensure a non-persistent script wakes up, call this code at its start synchronously
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "1min") {
+    minutes++;
+    chrome.storage.local.set({ 'minutes': minutes });
     chrome.system.memory.getInfo(function(info) {
       var capacity = info.capacity;
       var available = info.availableCapacity;

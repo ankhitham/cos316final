@@ -26,8 +26,6 @@ chrome.storage.local.get(['averageLatency'], function(result) {
     document.getElementById('latency').innerText = message;
     if (avgLatency !== undefined) {
         console.log("Average Latency: " + avgLatency);
-    } else {
-        console.error("Average latency is undefined in content script.");
     }
 });
 
