@@ -55,12 +55,14 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       var capacity = info.capacity;
       var available = info.availableCapacity;
       console.log('Alarm' + capacity + 'available' + available);
-      if (available / capacity <= 0.5) {
+      if (available / capacity <= 0.95) {
+        var percentAvail = available / capacity * 100;
+        percentAvail = percentAvail.toFixed(2);
         chrome.notifications.create({
           type: 'basic',
           iconUrl: 'next_try.png',
           title: 'Behind the Screen',
-          message: 'Available storage capacity dropped'
+          message: 'Available storage capacity dropped to ' + percentAvail + '%'
         });
       }
       console.log('gone into if');
