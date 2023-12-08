@@ -16,7 +16,7 @@ chrome.system.memory.getInfo(function(info) {
   var capacity = info.capacity;
   var available = info.availableCapacity;
   console.log(capacity + 'available' + available);
-  var message = 'Total capacity in megabytes: ' + (capacity / 1048576).toFixed(2) + ' Available memory at start of session in megabytes ' + (available / 1048576).toFixed(2)
+  var message = 'Total capacity: ' + (capacity / 1048576).toFixed(2) + 'MB. The current browsing session was started on ' + new Date(performance.timeOrigin) + ' and the available capacity at this time was ' + (available / 1048576).toFixed(2) + 'MB'
   document.getElementById('capacity').innerText = message;
 });
 
