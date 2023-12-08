@@ -1,4 +1,13 @@
 var numberOfPostRequests = 0;
+var startTime = 0;
+
+chrome.webRequest.onResponseStarted.addListener(
+  function(details) {
+  startTime = details.timeStamp;
+}, {
+  urls: ["http://*/*", "https://*/*"]
+},
+['responseHeaders']);
 
 chrome.webRequest.onCompleted.addListener(
   function(details) {
@@ -14,12 +23,14 @@ chrome.webRequest.onCompleted.addListener(
       // chrome.tabs.query({active: true, currentWindow: true }, function(tabs) {
       //   chrome.tabs.sendMessage(tabs[0].id, { numberOfPostRequests: numberOfPostRequests });
       // });
+
+      const loadTime = details.timeStamp - startTime;
       chrome.notifications.create({
         type: 'basic',
         iconUrl: 'next_try.png',
         title: 'Behind the Screen',
         message: 'Request Method: ' + details.method +
-                 ' Status Code: ' + details.statusCode
+                 ' Status Code: ' + details.statusCode + ' Response Process Time (ms): ' + loadTime
       });
     }
 
