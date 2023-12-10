@@ -7,6 +7,7 @@ chrome.storage.local.set({'averageLatency':  0});
 chrome.storage.local.set({ 'numberOfPostRequests': 0 });
 chrome.storage.local.set({ 'numberOfGetRequests': 0});
 chrome.storage.local.set({ 'numberOf404': 0});
+chrome.storage.local.set({'memoryAvailable': 0});
 var startTime = 0;
 var minutes = 0;
 chrome.storage.local.set({ 'minutes': 0 });
@@ -74,6 +75,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       console.log('Alarm' + capacity + 'available' + available);
       averageLatency = sumOfLatency / numberOfPostRequests;
       chrome.storage.local.set({'averageLatency':  averageLatency});
+      chrome.storage.local.set({'memoryAvailable': available})
       if (available / capacity <= 0.95) {
         var percentAvail = available / capacity * 100;
         percentAvail = percentAvail.toFixed(2);
