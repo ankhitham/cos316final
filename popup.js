@@ -42,4 +42,11 @@ chrome.storage.local.get(['numberOf404'], function(result) {
   }
 
 });
+
+chrome.storage.local.get(['memoryAvailable'], function(result) {
+  var memoryAvail = (result.memoryAvailable / 1048576).toFixed(2);
+  if (memoryAvail !== undefined && memoryAvail > 0) {
+    document.getElementById('memory').innerText = 'Memory Available: ' + memoryAvail + 'MB';
+  }
+});
   
