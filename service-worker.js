@@ -11,6 +11,21 @@ var startTime = 0;
 var minutes = 0;
 chrome.storage.local.set({ 'minutes': 0 });
 
+var numberOfStylesheets = 0;
+var numberOfScripts = 0;
+var numberOfXMLs = 0;
+var numberOfImages = 0;
+var numberOfPings = 0;
+var numberOfWebsockets = 0;
+var numberOfWebBundles = 0;
+chrome.storage.local.set({'numberOfStylesheets':  0});
+chrome.storage.local.set({ 'numberOfScripts': 0 });
+chrome.storage.local.set({ 'numberOfXMLs': 0});
+chrome.storage.local.set({ 'numberOfImages': 0});
+chrome.storage.local.set({ 'numberOfPings': 0});
+chrome.storage.local.set({ 'numberOfWebsockets': 0});
+chrome.storage.local.set({ 'numberOfWebBundles': 0});
+
 chrome.webRequest.onResponseStarted.addListener(
   function(details) {
   startTime = details.timeStamp;
@@ -21,6 +36,31 @@ chrome.webRequest.onResponseStarted.addListener(
 
 chrome.webRequest.onCompleted.addListener(
   function(details) {
+    if (details.type === "stylesheet") {
+      numberOfStylesheets++;
+      chrome.storage.local.set({'numberOfStylesheets':  numberOfStylesheets});
+    } else if (details.type === "script") {
+      numberOfScripts++;
+      chrome.storage.local.set({'numberOfScripts':  numberOfScripts});
+    } else if (details.type === "image") {
+      numberOfImages++;
+      chrome.storage.local.set({'numberOfImages':  numberOfImages});
+    } else if (details.type === "xmlhttprequest") {
+      numberOfXMLs++;
+      chrome.storage.local.set({'numberOfXMLs':  numberOfXMLs});
+    } else if (details.type === "ping") {
+      numberOfPings++;
+      chrome.storage.local.set({'numberOfPings':  numberOfPings});
+    } else if (details.type === "websocket") {
+      numberOfWebsockets++;
+      chrome.storage.local.set({'numberOfWebsockets':  numberOfWebsockets});
+    } else if (details.type === "webbundle") {
+      numberOfWebBundles++;
+      chrome.storage.local.set({'numberOfWebBundles':  numberOfWebBundles});
+    }
+
+    console.log("Request URL:", details.url);
+    console.log("Resource Type:", details.type);
     if (details.method === "POST") {
       numberOfPostRequests++;
       console.log("post requests background: " + numberOfPostRequests)
