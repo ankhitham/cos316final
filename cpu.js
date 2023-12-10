@@ -21,13 +21,13 @@ chrome.system.memory.getInfo(function(info) {
 });
 
 chrome.storage.local.get(['averageLatency'], function(result) {
-    var avgLatency = result.averageLatency;
-    var message = 'Average Latency (ms): ' + avgLatency;
-    document.getElementById('latency').innerText = message;
+    var avgLatency = result.averageLatency.toFixed(2);
+    if (avgLatency > 0) {
+        var message = 'Average Latency (ms): ' + avgLatency;
+        document.getElementById('latency').innerText = message;
+    }
     if (avgLatency !== undefined) {
         console.log("Average Latency: " + avgLatency);
-    } else {
-        console.error("Average latency is undefined in content script.");
     }
 });
 
