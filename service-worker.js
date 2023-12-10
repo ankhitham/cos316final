@@ -1,8 +1,12 @@
 var numberOfPostRequests = 0;
+var numberOfGetRequests = 0;
+var numberOf404 = 0;
 var sumOfLatency = 0;
 var averageLatency = 0;
 chrome.storage.local.set({ 'averageLatency': 0 });
 chrome.storage.local.set({ 'numberOfPostRequests': 0 });
+chrome.storage.local.set({ 'numberOfGetRequests': 0});
+chrome.storage.local.set({ 'numberOf404': 0});
 var startTime = 0;
 var minutes = 0;
 chrome.storage.local.set({ 'minutes': 0 });
@@ -31,6 +35,13 @@ chrome.webRequest.onCompleted.addListener(
         message: 'Request Method: ' + details.method +
                  ' Status Code: ' + details.statusCode + ' Response Process Time (ms): ' + loadTime
       });
+    } else if (details.method === "GET") {
+      numberOfGetRequests++;
+      chrome.storage.local.set({'numberOfGetRequests': numberOfGetRequests });
+    }
+    if (details.statusCode === 404) {
+      numberOf404++;
+      chrome.storage.local.set({'numberOf404': numberOf404 });
     }
 
     console.log('Request Method: ' + details.method +
