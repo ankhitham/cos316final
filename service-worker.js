@@ -144,10 +144,21 @@ chrome.processes.onUpdated.addListener(
       let type = details[info].type;
       let index = typeMap[type];
       let usage = details[info];
-      if (details[info].cpu !== NaN || details[info].cpu !== undefined) {
-        cpuSum[index] += details[info].cpu;
+      if (usage.cpu !== NaN && usage.cpu !== undefined && usage.cpu !== null) {
+        cpuSum[index] += usage.cpu;
       }
-      memorySum[index] += details[info].jsMemoryUsed;
+      if (usage.jsMemoryUsed !== NaN && usage.jsMemoryUsed !== undefined && usage.jsMemoryUsed !== null) {
+        memorySum[index] += usage.jsMemoryUsed;
+      }
+      if (usage.cssCache !== NaN && usage.cssCache !== undefined && usage.cssCache !== null && usage.cssCache.liveSize !== NaN && usage.cssCache.liveSize !== undefined && usage.cssCache.liveSize !== null) {
+        cacheSum[index] += usage.cssCache.liveSize;
+      }
+      if (usage.imageCache !== NaN && usage.imageCache !== undefined && usage.imageCache !== null && usage.imageCache.liveSize !== NaN && usage.imageCache.liveSize !== undefined && usage.imageCache.liveSize !== null) {
+        cacheSum[index] += usage.imageCache.liveSize;
+      }
+      if (usage.scriptCache !== NaN && usage.scriptCache !== undefined && usage.scriptCache !== null && usage.scriptCache.liveSize !== NaN && usage.scriptCache.liveSize !== undefined && usage.scriptCache.liveSize !== null) {
+        cacheSum[index] += usage.scriptCache.liveSize;
+      }
       // cacheSum[index] += details[info].cssCache.liveSize + details[info].imageCache.liveSize + details[info].scriptCache.liveSize;
       numOfProcessType[index]++;
       cpuAvg[index] = cpuSum[index] / numOfProcessType[index];
