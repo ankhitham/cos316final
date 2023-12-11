@@ -1,4 +1,5 @@
 
+var typeMap = ['browser', 'renderer', 'extension', 'notification', 'plugin', 'worker', 'nacl', 'service_worker', 'utility', 'gpu', 'other'];
 chrome.system.cpu.getInfo(function(info) {
   var cpuModel = info.modelName;
   var numCPU = info.numOfProcessors;
@@ -29,5 +30,50 @@ chrome.storage.local.get(['averageLatency'], function(result) {
     if (avgLatency !== undefined) {
         console.log("Average Latency: " + avgLatency);
     }
+});
+
+chrome.storage.local.get(['cpuAvg'], function(result) {
+    let cpuAvgs = result.cpuAvg;
+    var message = 'Average CPU Usage by Browser Process Type: ';
+    for (let i = 0; i < cpuAvgs.length; i++) {
+        message += typeMap[i] + ' - ';
+        if (cpuAvgs[i] === NaN || cpuAvgs[i] === undefined) {
+            message += 0;
+        } else {
+            message += cpuAvgs[i];
+        }
+        message += ' ';
+    }
+    document.getElementById('cpu').innerText = message;
+});
+
+chrome.storage.local.get(['cacheAvg'], function(result) {
+    let cacheAvgs = result.cacheAvg;
+    var message = 'Average Cache Usage by Browser Process Type: ';
+    for (let i = 0; i < cacheAvgs.length; i++) {
+        message += typeMap[i] + ' - ';
+        if (cacheAvgs[i] === NaN || cacheAvgs[i] === undefined) {
+            message += 0;
+        } else {
+            message += cacheAvgs[i];
+        }
+        message += ' ';
+    }
+    document.getElementById('cache').innerText = message;
+});
+
+chrome.storage.local.get(['memoryAvg'], function(result) {
+    var memoryAvgs = result.memoryAvg;
+    var message = 'Average Memory Usage by Browser Process Type: ';
+    for (let i = 0; i < memoryAvgs.length; i++) {
+        message += typeMap[i] + ' - ';
+        if (memoryAvgs[i] === NaN || memoryAvgs[i] === undefined) {
+            message += 0;
+        } else {
+            message += memoryAvgs[i];
+        }
+        message += ' ';
+    }
+    document.getElementById('memByType').innerText = message;
 });
 
