@@ -4,21 +4,23 @@ chrome.system.cpu.getInfo(function(info) {
   var cpuModel = info.modelName;
   var numCPU = info.numOfProcessors;
   var arch = info.archName;
-  var temps = JSON.stringify(info.temperatures);
+  // var temps = JSON.stringify(info.temperatures);
   var processor = JSON.stringify(info.processors);
   // console.log(JSON.stringify(info));
   // console.log(info.total);
   // console.log(cpuInfo);
-  var message = 'CPU Model: ' + cpuModel + ' Number of CPUs: ' + numCPU + ' CPU Architecture: ' + arch + 'Temp: '+ temps
-  document.getElementById('numOfProcessors').innerText = message;
+  document.getElementById('cpuModel').innerText = 'CPU Model: ' + cpuModel;
+  document.getElementById('cpuNumber').innerText = 'Number of CPUs: ' + numCPU;
+  document.getElementById('cpuArch').innerText = 'CPU Architecture: ' + arch;
 });
 
 chrome.system.memory.getInfo(function(info) {
   var capacity = info.capacity;
   var available = info.availableCapacity;
   console.log(capacity + 'available' + available);
-  var message = 'Total capacity: ' + (capacity / 1048576).toFixed(2) + 'MB. The current browsing session was started on ' + new Date(performance.timeOrigin) + ' and the available capacity at this time was ' + (available / 1048576).toFixed(2) + 'MB'
+  var message = 'Total Memory Capacity: ' + (capacity / 1048576).toFixed(2) + 'MB'
   document.getElementById('capacity').innerText = message;
+  document.getElementById('browserStart').innerText = '(This browsing session was started on ' + new Date(performance.timeOrigin) + ' and the available capacity at this time was ' + (available / 1048576).toFixed(2) + 'MB)';
 });
 
 chrome.storage.local.get(['averageLatency'], function(result) {
@@ -34,45 +36,45 @@ chrome.storage.local.get(['averageLatency'], function(result) {
 
 chrome.storage.local.get(['cpuAvg'], function(result) {
     let cpuAvgs = result.cpuAvg;
-    var message = 'Average CPU Usage by Browser Process Type: ';
+    var message = '';
     for (let i = 0; i < cpuAvgs.length; i++) {
-        message += typeMap[i] + ' - ';
+        message += typeMap[i] + ': ';
         if (cpuAvgs[i] === NaN || cpuAvgs[i] === undefined || cpuAvgs[i] === null) {
             message += 0;
         } else {
-            message += cpuAvgs[i];
+            message += cpuAvgs[i].toFixed(3);
         }
-        message += ' ';
+        message += '\n ';
     }
     document.getElementById('cpu').innerText = message;
 });
 
 chrome.storage.local.get(['cacheAvg'], function(result) {
     let cacheAvgs = result.cacheAvg;
-    var message = 'Average Cache Usage by Browser Process Type: ';
+    var message = '';
     for (let i = 0; i < cacheAvgs.length; i++) {
-        message += typeMap[i] + ' - ';
+        message += typeMap[i] + ': ';
         if (cacheAvgs[i] === NaN || cacheAvgs[i] === undefined || cacheAvgs[i] === null) {
             message += 0;
         } else {
-            message += cacheAvgs[i];
+            message += cacheAvgs[i].toFixed(3);
         }
-        message += ' ';
+        message += '\n ';
     }
     document.getElementById('cache').innerText = message;
 });
 
 chrome.storage.local.get(['memoryAvg'], function(result) {
     var memoryAvgs = result.memoryAvg;
-    var message = 'Average Memory Usage by Browser Process Type: ';
+    var message = '';
     for (let i = 0; i < memoryAvgs.length; i++) {
-        message += typeMap[i] + ' - ';
+        message += typeMap[i] + ': ';
         if (memoryAvgs[i] === NaN || memoryAvgs[i] === undefined || memoryAvgs[i] === null) {
             message += 0;
         } else {
-            message += memoryAvgs[i];
+            message += memoryAvgs[i].toFixed(3);
         }
-        message += ' ';
+        message += '\n ';
     }
     document.getElementById('memByType').innerText = message;
 });

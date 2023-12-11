@@ -1,26 +1,104 @@
 <html>
+  <style type="text/css" >
+    body {
+      min-width: 350px;
+      max-width: 350px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-size: 14px;
+      background-color: #f0fcf9;
+    }
+    h1 {
+      background-color: #15ab92;
+      padding: 15px;
+      border-radius: 5px;
+      color: white;
+      text-align: center;
+    }
+    h3 {
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-right: 5px;
+      background-color: #15ab92;
+      border-radius: 20px;
+      color: white;
+      width:auto;
+      margin: 3px;
+    }
+    #block {
+      background-color: white;
+      border: 2px solid #15ab92;
+      border-radius: 15px;
+      padding: 10px;
+    }
+    #browserStart {
+      color:#15ab92;
+      font-style: italic;
+    }
+    #processTitle{
+      text-decoration: underline;
+    }
+  </style >
   <body>
-    <h1>Behind the Screen</h1>
-    <div id="numberOfPostRequestsDisplay">Number of Post Requests: Loading...</div>
-    <div id="numberOfGetRequestsDisplay">Number of Get Requests: Loading...</div>
-    <div id="numberOf404Display">Number of 404 Requests: Loading...</div>
+    <!-- Scripts -->
     <script src="popup.js"></script>
-    <div id = "numOfProcessors">CPU Info: Loading...</div>
-    <div id = "capacity">Memory Info: Loading...</div>
-    <div id = "latency">Average Latency: Loading...</div>
-    <div id = "minutes">Minutes: Loading...</div>
-    <div id = "numberOfStylesheets">StyleSheet Resource Requests: Loading...</div>
-    <div id = "numberOfScripts">Script Resource Requests: Loading...</div>
-    <div id = "numberOfImages">Image Resource Requests: Loading...</div>
-    <div id = "numberOfXMLs">XML HTTP Request Resource Requests: Loading...</div>
-    <div id = "numberOfPings">Ping Resource Requests: Loading...</div>
-    <div id = "numberOfWebsockets">Web Socket Resource Requests: Loading...</div>
-    <div id = "numberOfWebBundles">Web Bundle Resource Requests: Loading...</div>
-    
-    <div id = "memory">Percent of Memory Available: Loading...</div>
-    <div id = "cpu">Average CPU Usage by Browser Process Type: Loading...</div>
-    <div id = "memByType">Average Memory Usage by Browser Process Type: Loading...</div>
-    <div id = "cache">Average CPU Usage by Browser Process Type: Loading...</div>
     <script src="cpu.js"></script>
+
+    <!-- Display -->
+    <h1>Behind the Screen</h1>
+    <div id="block">
+      <div id = "minutes">Minutes Since Session Start: Loading...</div>
+    </div>
+    <br>
+
+    <h3> Web Request Details: </h3>
+    <div id="block">
+      <div id="numberOfPostRequestsDisplay">Post Request Count: Loading...</div>
+      <div id="numberOfGetRequestsDisplay">Get Request Count: Loading...</div>
+      <div id="numberOf404Display">404 Request Count: Loading...</div>
+      <div id = "latency">Average Latency: Loading...</div>
+    </div>
+    <br>
+
+    <h3> Resource Request Details: </h3>
+    <div id="block">
+      <div id = "numberOfStylesheets">StyleSheet Request Count: Loading...</div>
+      <div id = "numberOfScripts">Script Request Count: Loading...</div>
+      <div id = "numberOfImages">Image Request Count: Loading...</div>
+      <div id = "numberOfXMLs">XML Request Count: Loading...</div>
+      <div id = "numberOfPings">Ping Request Count: Loading...</div>
+      <div id = "numberOfWebsockets">Web Socket Request Count: Loading...</div>
+      <div id = "numberOfWebBundles">Web Bundle Request Count: Loading...</div>
+    </div>
+    <br>
+
+    <h3> Memory Details: </h3>
+    <div id="block">
+      <div id = "memory">Available Memory: Loading...</div>
+      <div id = "capacity">Total Memory Capacity: Loading...</div>
+      <div id = "browserStart">Memory Info: Loading...</div>
+      <br>
+      <div id="processTitle">Average Memory Usage by Browser Process Type: </div>
+      <div id = "memByType">Loading...</div>
+    </div>
+    <br>
+
+    <h3> CPU Details: </h3>
+    <div id="block">
+      <div id = "cpuModel">CPU Model: Loading...</div>
+      <div id = "cpuNumber">Number of CPUs: Loading...</div>
+      <div id = "cpuArch">CPU Architecture: Loading...</div>
+      <br>
+      <div id="processTitle">Average CPU Usage by Browser Process Type: </div>
+      <div id = "cpu">Loading...</div>
+      <br>
+      <div id="processTitle">Average Cache Usage by Browser Process Type:</div>
+      <div id = "cache">Loading...</div>
+    </div>
+    
   </body>
 </html>
