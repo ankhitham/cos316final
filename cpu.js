@@ -37,7 +37,7 @@ chrome.storage.local.get(['cpuAvg'], function(result) {
     var message = 'Average CPU Usage by Browser Process Type: ';
     for (let i = 0; i < cpuAvgs.length; i++) {
         message += typeMap[i] + ' - ';
-        if (cpuAvgs[i] === NaN || cpuAvgs[i] === undefined) {
+        if (cpuAvgs[i] === NaN || cpuAvgs[i] === undefined || cpuAvgs[i] === null) {
             message += 0;
         } else {
             message += cpuAvgs[i];
@@ -52,7 +52,7 @@ chrome.storage.local.get(['cacheAvg'], function(result) {
     var message = 'Average Cache Usage by Browser Process Type: ';
     for (let i = 0; i < cacheAvgs.length; i++) {
         message += typeMap[i] + ' - ';
-        if (cacheAvgs[i] === NaN || cacheAvgs[i] === undefined) {
+        if (cacheAvgs[i] === NaN || cacheAvgs[i] === undefined || cacheAvgs[i] === null) {
             message += 0;
         } else {
             message += cacheAvgs[i];
@@ -67,7 +67,7 @@ chrome.storage.local.get(['memoryAvg'], function(result) {
     var message = 'Average Memory Usage by Browser Process Type: ';
     for (let i = 0; i < memoryAvgs.length; i++) {
         message += typeMap[i] + ' - ';
-        if (memoryAvgs[i] === NaN || memoryAvgs[i] === undefined) {
+        if (memoryAvgs[i] === NaN || memoryAvgs[i] === undefined || memoryAvgs[i] === null) {
             message += 0;
         } else {
             message += memoryAvgs[i];
