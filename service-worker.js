@@ -29,14 +29,14 @@ chrome.storage.local.set({ 'numberOfImages': 0});
 chrome.storage.local.set({ 'numberOfPings': 0});
 chrome.storage.local.set({ 'numberOfWebsockets': 0});
 chrome.storage.local.set({ 'numberOfWebBundles': 0});
-const cpuSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const cacheSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const memorySum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const cpuAvg = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const cacheAvg = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const memoryAvg = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const numOfProcessType = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var typeMap = {'browser': 0, 'renderer': 1, 'extension': 2, 'notification': 3, 'plugin': 4, 'worker': 5, 'nacl': 6, 'service_worker': 7, 'utility': 8, 'gpu': 9, 'other': 10};
+const cpuSum = [0, 0, 0, 0, 0, 0, 0];
+const cacheSum = [0, 0, 0, 0, 0, 0, 0];
+const memorySum = [0, 0, 0, 0, 0, 0, 0];
+const cpuAvg = [0, 0, 0, 0, 0, 0, 0];
+const cacheAvg = [0, 0, 0, 0, 0, 0, 0];
+const memoryAvg = [0, 0, 0, 0, 0, 0, 0];
+const numOfProcessType = [0, 0, 0, 0, 0, 0, 0];
+var typeMap = {'browser': 0, 'renderer': 1, 'extension': 2, 'notification': 3, 'service_worker': 4, 'utility': 5, 'gpu': 6};
 
 chrome.webRequest.onResponseStarted.addListener(
   function(details) {
@@ -169,5 +169,5 @@ chrome.processes.onUpdated.addListener(
       chrome.storage.local.set({'memoryAvg': memoryAvg});
 
     }
-    console.log(cpuSum[1] + 'numOfProcessType ' + numOfProcessType[1] + 'memorySum' + memorySum[1] + 'cache' + cacheSum[1])
+    // console.log(cpuSum[1] + 'numOfProcessType ' + numOfProcessType[1] + 'memorySum' + memorySum[1] + 'cache' + cacheSum[1])
 });
