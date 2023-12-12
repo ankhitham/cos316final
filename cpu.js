@@ -1,5 +1,5 @@
 
-var typeMap = ['browser', 'renderer', 'extension', 'notification', 'plugin', 'worker', 'nacl', 'service_worker', 'utility', 'gpu', 'other'];
+var typeMap = ['browser', 'renderer', 'extension', 'notification', 'service worker', 'utility', 'gpu'];
 chrome.system.cpu.getInfo(function(info) {
   var cpuModel = info.modelName;
   var numCPU = info.numOfProcessors;
