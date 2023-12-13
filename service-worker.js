@@ -139,7 +139,6 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
 chrome.processes.onUpdated.addListener(
   function(details) {
-    // console.log(JSON.stringify(details));
     for (let info in details) {
       let type = details[info].type;
       let index = typeMap[type];
@@ -159,7 +158,7 @@ chrome.processes.onUpdated.addListener(
       if (usage.scriptCache !== NaN && usage.scriptCache !== undefined && usage.scriptCache !== null && usage.scriptCache.liveSize !== NaN && usage.scriptCache.liveSize !== undefined && usage.scriptCache.liveSize !== null) {
         cacheSum[index] += usage.scriptCache.liveSize;
       }
-      // cacheSum[index] += details[info].cssCache.liveSize + details[info].imageCache.liveSize + details[info].scriptCache.liveSize;
+      
       numOfProcessType[index]++;
       cpuAvg[index] = cpuSum[index] / numOfProcessType[index];
       memoryAvg[index] = memorySum[index] / numOfProcessType[index];
@@ -169,5 +168,5 @@ chrome.processes.onUpdated.addListener(
       chrome.storage.local.set({'memoryAvg': memoryAvg});
 
     }
-    // console.log(cpuSum[1] + 'numOfProcessType ' + numOfProcessType[1] + 'memorySum' + memorySum[1] + 'cache' + cacheSum[1])
+    
 });
