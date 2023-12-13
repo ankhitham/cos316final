@@ -42,7 +42,7 @@ chrome.storage.local.get(['cpuAvg'], function(result) {
         if (cpuAvgs[i] === NaN || cpuAvgs[i] === undefined || cpuAvgs[i] === null) {
             message += 0;
         } else {
-            message += cpuAvgs[i].toFixed(3);
+            message += (cpuAvgs[i] * 100).toFixed(2);
         }
         message += '\n ';
     }
