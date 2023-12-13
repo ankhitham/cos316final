@@ -15,7 +15,7 @@ chrome.system.memory.getInfo(function(info) {
   console.log(capacity + 'available' + available);
   var message = 'Total Memory Capacity: ' + (capacity / 1048576).toFixed(2) + 'MB'
   document.getElementById('capacity').innerText = message;
-  document.getElementById('browserStart').innerText = '(This browsing session was started on ' + new Date(performance.timeOrigin) + ' and the available capacity at this time was ' + (available / 1048576).toFixed(2) + 'MB)';
+  document.getElementById('browserStart').innerText = '(The available memory capacity at the time that this browsing session was started was ' + (available / 1048576).toFixed(2) + 'MB)';
 });
 
 chrome.storage.local.get(['averageLatency'], function(result) {
