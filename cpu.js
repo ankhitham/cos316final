@@ -4,11 +4,6 @@ chrome.system.cpu.getInfo(function(info) {
   var cpuModel = info.modelName;
   var numCPU = info.numOfProcessors;
   var arch = info.archName;
-  // var temps = JSON.stringify(info.temperatures);
-  var processor = JSON.stringify(info.processors);
-  // console.log(JSON.stringify(info));
-  // console.log(info.total);
-  // console.log(cpuInfo);
   document.getElementById('cpuModel').innerText = 'CPU Model: ' + cpuModel;
   document.getElementById('cpuNumber').innerText = 'Number of CPUs: ' + numCPU;
   document.getElementById('cpuArch').innerText = 'CPU Architecture: ' + arch;
