@@ -85,7 +85,7 @@ chrome.webRequest.onCompleted.addListener(
         iconUrl: 'next_try.png',
         title: 'Behind the Screen',
         message: 'Request Method: ' + details.method +
-                 ' Status Code: ' + details.statusCode + ' Response Process Time (ms): ' + loadTime
+                 ' Status Code: ' + details.statusCode + ' Response Process Time (ms): ' + loadTime.toFixed(2)
       });
     } else if (details.method === "GET") {
       numberOfGetRequests++;
