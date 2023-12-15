@@ -142,7 +142,6 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       if (available / capacity <= 0.95) {
         percentAvail = (available / capacity * 100).toFixed(2);
 
-
         chrome.notifications.create({
           type: 'basic',
           iconUrl: 'next_try.png',

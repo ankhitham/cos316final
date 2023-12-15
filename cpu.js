@@ -72,4 +72,3 @@ chrome.storage.local.get(['memoryAvg'], function(result) {
     }
     document.getElementById('memByType').innerText = message;
 });
-
