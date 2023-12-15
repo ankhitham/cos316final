@@ -3,6 +3,17 @@ var numberOfGetRequests = 0;
 var numberOf404 = 0;
 var sumOfLatency = 0;
 var averageLatency = 0;
+var startTime = 0;
+var minutes = 0;
+var numberOfStylesheets = 0;
+var numberOfScripts = 0;
+var numberOfXMLs = 0;
+var numberOfImages = 0;
+var numberOfPings = 0;
+var numberOfWebsockets = 0;
+var numberOfWebBundles = 0;
+var typeMap = {'browser': 0, 'renderer': 1, 'extension': 2, 'notification': 3, 'service_worker': 4, 'utility': 5, 'gpu': 6};
+
 chrome.storage.local.set({'averageLatency':  0});
 chrome.storage.local.set({ 'numberOfPostRequests': 0 });
 chrome.storage.local.set({ 'numberOfGetRequests': 0});
@@ -11,17 +22,7 @@ chrome.storage.local.set({'memoryAvailable': 0});
 chrome.storage.local.set({'cpuAvg': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
 chrome.storage.local.set({'cacheAvg': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
 chrome.storage.local.set({'memoryAvg': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
-var startTime = 0;
-var minutes = 0;
 chrome.storage.local.set({ 'minutes': 0 });
-
-var numberOfStylesheets = 0;
-var numberOfScripts = 0;
-var numberOfXMLs = 0;
-var numberOfImages = 0;
-var numberOfPings = 0;
-var numberOfWebsockets = 0;
-var numberOfWebBundles = 0;
 chrome.storage.local.set({'numberOfStylesheets':  0});
 chrome.storage.local.set({ 'numberOfScripts': 0 });
 chrome.storage.local.set({ 'numberOfXMLs': 0});
@@ -29,6 +30,7 @@ chrome.storage.local.set({ 'numberOfImages': 0});
 chrome.storage.local.set({ 'numberOfPings': 0});
 chrome.storage.local.set({ 'numberOfWebsockets': 0});
 chrome.storage.local.set({ 'numberOfWebBundles': 0});
+
 const cpuSum = [0, 0, 0, 0, 0, 0, 0];
 const cacheSum = [0, 0, 0, 0, 0, 0, 0];
 const memorySum = [0, 0, 0, 0, 0, 0, 0];
@@ -36,7 +38,6 @@ const cpuAvg = [0, 0, 0, 0, 0, 0, 0];
 const cacheAvg = [0, 0, 0, 0, 0, 0, 0];
 const memoryAvg = [0, 0, 0, 0, 0, 0, 0];
 const numOfProcessType = [0, 0, 0, 0, 0, 0, 0];
-var typeMap = {'browser': 0, 'renderer': 1, 'extension': 2, 'notification': 3, 'service_worker': 4, 'utility': 5, 'gpu': 6};
 
 chrome.webRequest.onResponseStarted.addListener(
   function(details) {
@@ -110,7 +111,6 @@ chrome.alarms.create("1min", {
   periodInMinutes: 1
 });
 
-// To ensure a non-persistent script wakes up, call this code at its start synchronously
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "1min") {
     minutes++
