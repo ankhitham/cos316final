@@ -1,3 +1,9 @@
+// Service Worker: Calls Chrome API to track system event data, and call
+// functions according to a specified alarm.
+// We referenced the Chrome API https://developer.chrome.com/docs/extensions/reference/api
+// as well as the examples provided on https://github.com/GoogleChrome/chrome-extensions-samples.
+
+// Local Variables
 var numberOfPostRequests = 0;
 var numberOfGetRequests = 0;
 var numberOf404 = 0;
@@ -14,6 +20,16 @@ var numberOfWebsockets = 0;
 var numberOfWebBundles = 0;
 var typeMap = {'browser': 0, 'renderer': 1, 'extension': 2, 'notification': 3, 'service_worker': 4, 'utility': 5, 'gpu': 6};
 
+// Local Constants
+const cpuSum = [0, 0, 0, 0, 0, 0, 0];
+const cacheSum = [0, 0, 0, 0, 0, 0, 0];
+const memorySum = [0, 0, 0, 0, 0, 0, 0];
+const cpuAvg = [0, 0, 0, 0, 0, 0, 0];
+const cacheAvg = [0, 0, 0, 0, 0, 0, 0];
+const memoryAvg = [0, 0, 0, 0, 0, 0, 0];
+const numOfProcessType = [0, 0, 0, 0, 0, 0, 0];
+
+// Chrome Storage Initialization
 chrome.storage.local.set({'averageLatency':  0});
 chrome.storage.local.set({ 'numberOfPostRequests': 0 });
 chrome.storage.local.set({ 'numberOfGetRequests': 0});
@@ -31,14 +47,7 @@ chrome.storage.local.set({ 'numberOfPings': 0});
 chrome.storage.local.set({ 'numberOfWebsockets': 0});
 chrome.storage.local.set({ 'numberOfWebBundles': 0});
 
-const cpuSum = [0, 0, 0, 0, 0, 0, 0];
-const cacheSum = [0, 0, 0, 0, 0, 0, 0];
-const memorySum = [0, 0, 0, 0, 0, 0, 0];
-const cpuAvg = [0, 0, 0, 0, 0, 0, 0];
-const cacheAvg = [0, 0, 0, 0, 0, 0, 0];
-const memoryAvg = [0, 0, 0, 0, 0, 0, 0];
-const numOfProcessType = [0, 0, 0, 0, 0, 0, 0];
-
+// Listens to the Web Requests Response Started Events
 chrome.webRequest.onResponseStarted.addListener(
   function(details) {
   startTime = details.timeStamp;
@@ -47,8 +56,11 @@ chrome.webRequest.onResponseStarted.addListener(
 },
 ['responseHeaders']);
 
+// Listens to the Web Requests Completed Events
 chrome.webRequest.onCompleted.addListener(
   function(details) {
+
+    // Tracks resource requests
     if (details.type === "stylesheet") {
       numberOfStylesheets++;
       chrome.storage.local.set({'numberOfStylesheets':  numberOfStylesheets});
@@ -72,33 +84,31 @@ chrome.webRequest.onCompleted.addListener(
       chrome.storage.local.set({'numberOfWebBundles':  numberOfWebBundles});
     }
 
-    console.log("Request URL:", details.url);
-    console.log("Resource Type:", details.type);
+    // Tracks POST and GET requests
     if (details.method === "POST") {
       numberOfPostRequests++;
-      console.log("post requests background: " + numberOfPostRequests)
       chrome.storage.local.set({'numberOfPostRequests': numberOfPostRequests });
-
       const loadTime = details.timeStamp - startTime;
       sumOfLatency += loadTime;
+
+      // Creates POST request notifications
       chrome.notifications.create({
         type: 'basic',
         iconUrl: 'next_try.png',
         title: 'Behind the Screen',
-        message: 'Request Method: ' + details.method +
+        message: 'Request Method: ' + "POST" +
                  ' Status Code: ' + details.statusCode + ' Response Process Time (ms): ' + loadTime.toFixed(2)
       });
     } else if (details.method === "GET") {
       numberOfGetRequests++;
       chrome.storage.local.set({'numberOfGetRequests': numberOfGetRequests });
     }
+
+    // Tracks 404 requests
     if (details.statusCode === 404) {
       numberOf404++;
       chrome.storage.local.set({'numberOf404': numberOf404 });
     }
-
-    console.log('Request Method: ' + details.method +
-                ' Status Code: ' + details.statusCode);
   },
   {
     urls: ["http://*/*", "https://*/*"]
@@ -106,25 +116,33 @@ chrome.webRequest.onCompleted.addListener(
   ['responseHeaders']
 );
 
+// Creates an Alarm for Every Minute
 chrome.alarms.create("1min", {
   delayInMinutes: 1,
   periodInMinutes: 1
 });
 
+// Calls Functions according to Alarm
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "1min") {
     minutes++
     chrome.storage.local.set({'minutes':  minutes});
+
+    // Tracks System Memory Details
     chrome.system.memory.getInfo(function(info) {
       var capacity = info.capacity;
       var available = info.availableCapacity;
-      console.log('Alarm' + capacity + 'available' + available);
+
       averageLatency = sumOfLatency / numberOfPostRequests;
+
       chrome.storage.local.set({'averageLatency':  averageLatency});
       chrome.storage.local.set({'memoryAvailable': available})
+
+      // Creates Storage Capacity Notifications
       if (available / capacity <= 0.95) {
-        var percentAvail = available / capacity * 100;
-        percentAvail = percentAvail.toFixed(2);
+        percentAvail = (available / capacity * 100).toFixed(2);
+
+
         chrome.notifications.create({
           type: 'basic',
           iconUrl: 'next_try.png',
@@ -132,17 +150,20 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           message: 'Available storage capacity is ' + percentAvail + '%'
         });
       }
-      console.log('gone into if');
     });
+
   }
 });
 
+// Listens to Updated Browser Processes
 chrome.processes.onUpdated.addListener(
   function(details) {
+    // Tracks CPU, Cache, and Memory per Browser Process
     for (let info in details) {
       let type = details[info].type;
       let index = typeMap[type];
       let usage = details[info];
+
       if (usage.cpu !== NaN && usage.cpu !== undefined && usage.cpu !== null) {
         cpuSum[index] += usage.cpu;
       }

@@ -1,34 +1,31 @@
+// Content Script: Updates the display HTML for cpuModel,
+// cpuNumber, cpuArch, capacity, browserStart, latency,
+// cpu, cache, memByType
 
 var typeMap = ['browser', 'renderer', 'extension', 'notification', 'service worker', 'utility', 'gpu'];
+
+// Updates display HTML for cpuModel, cpuNumber, cpuArch
 chrome.system.cpu.getInfo(function(info) {
-  var cpuModel = info.modelName;
-  var numCPU = info.numOfProcessors;
-  var arch = info.archName;
-  document.getElementById('cpuModel').innerText = 'CPU Model: ' + cpuModel;
-  document.getElementById('cpuNumber').innerText = 'Number of CPUs: ' + numCPU;
-  document.getElementById('cpuArch').innerText = 'CPU Architecture: ' + arch;
+  document.getElementById('cpuModel').innerText = 'CPU Model: ' + info.modelName;
+  document.getElementById('cpuNumber').innerText = 'Number of CPUs: ' + info.numOfProcessors;
+  document.getElementById('cpuArch').innerText = 'CPU Architecture: ' + info.archName;
 });
 
+// Updates display HTML for capacity, browserStart
 chrome.system.memory.getInfo(function(info) {
-  var capacity = info.capacity;
-  var available = info.availableCapacity;
-  console.log(capacity + 'available' + available);
-  var message = 'Total Memory Capacity: ' + (capacity / 1048576).toFixed(2) + 'MB'
-  document.getElementById('capacity').innerText = message;
-  document.getElementById('browserStart').innerText = '(The available memory capacity at the time that this browsing session was started was ' + (available / 1048576).toFixed(2) + 'MB)';
+  document.getElementById('capacity').innerText = 'Total Memory Capacity: ' + (info.capacity / 1048576).toFixed(2) + 'MB';
+  document.getElementById('browserStart').innerText = '(The available memory capacity at the time that this browsing session was started was ' + (info.availableCapacity / 1048576).toFixed(2) + 'MB)';
 });
 
+// Updates display HTML for latency
 chrome.storage.local.get(['averageLatency'], function(result) {
     var avgLatency = result.averageLatency.toFixed(2);
     if (avgLatency > 0) {
-        var message = 'Average Latency (ms): ' + avgLatency;
-        document.getElementById('latency').innerText = message;
-    }
-    if (avgLatency !== undefined) {
-        console.log("Average Latency: " + avgLatency);
+        document.getElementById('latency').innerText = 'Average Latency (ms): ' + avgLatency;
     }
 });
 
+// Updates display HTML for cpu
 chrome.storage.local.get(['cpuAvg'], function(result) {
     let cpuAvgs = result.cpuAvg;
     var message = '';
@@ -44,6 +41,7 @@ chrome.storage.local.get(['cpuAvg'], function(result) {
     document.getElementById('cpu').innerText = message;
 });
 
+// Updates display HTML for cache
 chrome.storage.local.get(['cacheAvg'], function(result) {
     let cacheAvgs = result.cacheAvg;
     var message = '';
@@ -59,6 +57,7 @@ chrome.storage.local.get(['cacheAvg'], function(result) {
     document.getElementById('cache').innerText = message;
 });
 
+// Updates display HTML for memByType
 chrome.storage.local.get(['memoryAvg'], function(result) {
     var memoryAvgs = result.memoryAvg;
     var message = '';
